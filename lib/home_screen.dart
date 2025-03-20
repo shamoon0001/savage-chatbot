@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'history_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,11 +29,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.34.238:8000/chatbot-response/?message=$userMessage'),
+        Uri.parse('http://192.168.27.238:8000/chatbot-response/?message=$userMessage'),
       );
 
       if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
+        final responseData = jsonDecode(utf8.decode(response.bodyBytes));
         setState(() {
           _messages.insert(0, {
             "sender": "ShanaAi",
@@ -61,24 +62,38 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _openHistoryScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ChatHistoryScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation:0,
+        centerTitle: true,
+        title: const Text(
+          "ShanaAi",
+        style: TextStyle(
+          color: Colors.white,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.history, color: Colors.blueAccent,size: 30,),
+            onPressed: _openHistoryScreen, // Opens history screen
+          ),
+        ],
+      ),
       body: Column(
         children: [
-          const SizedBox(height: 40),
-          const Center(
-            child: Text(
-              "ShanaAi🔥",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
           Expanded(
             child: ListView.builder(
               reverse: true,
@@ -97,7 +112,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: Text(
                       "${_messages[index]["sender"]}: ${_messages[index]["message"]}",
-                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,fontFamily: 'sans-serif',),
+
                     ),
                   ),
                 );
