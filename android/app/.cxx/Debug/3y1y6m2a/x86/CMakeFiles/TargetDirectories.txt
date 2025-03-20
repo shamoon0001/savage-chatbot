@@ -1,0 +1,2 @@
+C:/Users/HP/StudioProjects/shanai/android/app/.cxx/Debug/3y1y6m2a/x86/CMakeFiles/edit_cache.dir
+C:/Users/HP/StudioProjects/shanai/android/app/.cxx/Debug/3y1y6m2a/x86/CMakeFiles/rebuild_cache.dir
